@@ -2,7 +2,7 @@
 // 路由：/functions/api/coupons.js → /api/coupons
 // 说明：Pages Functions 无常驻内存缓存/定时器，故每次请求直接抓取；
 //       couponsHandler 内置"当季精选"兜底，ok 恒为 true。
-// 格式：CommonJS 导出 onRequest（构建后对外为 onRequest）。
+// 格式：ESM 导出 onRequest（wrangler 构建所需）。
 const webapi = require('../../lib/webapi');
 
 const CORS_HEADERS = {
@@ -18,7 +18,7 @@ function jsonResponse(status, obj) {
   });
 }
 
-async function onRequest(context) {
+export async function onRequest(context) {
   const request = (context && context.request) || {};
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -36,5 +36,3 @@ async function onRequest(context) {
     });
   }
 }
-
-module.exports = { onRequest };

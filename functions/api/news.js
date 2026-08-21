@@ -3,7 +3,7 @@
 // 说明：Pages Functions 无常驻内存缓存/定时器，故每次请求全新抓取一次（冷启动
 //       一次抓取较慢可接受，多源各有独立超时）。内部 try/catch 兜底：
 //       复用 lib/webapi.js 的 newsHandler 内置兜底（抓取失败时返回内置条目）。
-// 格式：CommonJS 导出 onRequest（构建后对外为 onRequest）。
+// 格式：ESM 导出 onRequest（wrangler 构建所需）。
 const webapi = require('../../lib/webapi');
 
 const CORS_HEADERS = {
@@ -19,7 +19,7 @@ function jsonResponse(status, obj) {
   });
 }
 
-async function onRequest(context) {
+export async function onRequest(context) {
   const request = (context && context.request) || {};
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -39,5 +39,3 @@ async function onRequest(context) {
     });
   }
 }
-
-module.exports = { onRequest };
