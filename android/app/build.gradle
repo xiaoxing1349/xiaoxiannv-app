@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.wuxinglife.app'
+            compileSdk 34
+
+    defaultConfig {
+        applicationId "com.wuxinglife.app"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// 将 Web 应用资源复制到 assets/www
+def webAssets = "$rootDir/../public"
+tasks.register('copyWebAssets', Copy) {
+    from webAssets
+    into "$projectDir/src/main/assets/www"
+    exclude 'sw.js'
+}
+preBuild.dependsOn copyWebAssets
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.webkit:webkit:1.9.0'
+}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>小仙女专用 · 每日运势·穿搭·新闻热点</title>
+<meta name="description" content="每日五行穿衣、黄历宜忌、梅花易数测算、国内外新闻影响解析。">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#1d2d4f">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<style>
+:root{
+  --bg:#fff0f5;
+  --card:#ffffff;
+  --ink:#5c3d6e;
+  --muted:#b3889e;
+  --gold:#e8a0b4;
+  --gold-soft:#fce4ec;
+  --navy:#8e4a6b;
+  --navy-2:#c45a7c;
+  --red:#e74c7c;
+  --green:#5ba88c;
+  --line:#f0dce4;
+  --radius:18px;
+  --shadow:0 6px 24px rgba(142,74,107,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px;
+}
+#app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:70px}
+/* 顶部 */
+.app-header{
+  background:linear-gradient(135deg,var(--navy),var(--navy-2));
+  color:#fff;padding:20px 18px 60px;position:relative;overflow:hidden;
+  border-bottom-left-radius:26px;border-bottom-right-radius:26px;
+  box-shadow:0 8px 28px rgba(29,45,79,.35);
+}
+.app-header::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.06);}
+.app-header::before{content:"";position:absolute;left:-30px;bottom:-50px;width:140px;height:140px;border-radius:50%;background:rgba(201,162,39,.18);}
+.header-title{font-size:21px;font-weight:700;letter-spacing:1px;position:relative;z-index:1;display:flex;align-items:center;gap:8px}
+.header-title .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);display:inline-block;box-shadow:0 0 10px rgba(201,162,39,.8)}
+.header-date{font-size:13px;color:#cdd6ea;margin-top:6px;position:relative;z-index:1;opacity:.9}
+/* Tab 切换 */
+.tab-bar{
+  display:flex;background:#fff;border-radius:14px;padding:5px;margin:14px 14px 0;
+  box-shadow:var(--shadow);position:relative;z-index:5;
+}
+.tab-btn{
+  flex:1;text-align:center;padding:8px 2px;border:none;background:transparent;border-radius:10px;
+  font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;transition:.25s;position:relative;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.tab-btn .ic{display:block;font-size:16px;margin-bottom:1px}
+.tab-btn.active{background:var(--navy);color:#fff;box-shadow:0 4px 12px rgba(29,45,79,.3)}
+/* 内容区 */
+.panel{display:none;padding:16px 14px;animation:fade .35s ease}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:14px;border:1px solid var(--line)}
+.card-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-title .bar{width:4px;height:18px;border-radius:2px;background:linear-gradient(var(--gold),#e8b64c)}
+.section-tag{display:inline-block;font-size:11px;color:var(--gold);background:var(--gold-soft);padding:2px 8px;border-radius:20px;font-weight:600}
+/* 按钮 */
+.btn{
+  display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;
+  background:linear-gradient(120deg,var(--navy),var(--navy-2));color:#fff;cursor:pointer;margin-top:10px;
+  box-shadow:0 6px 18px rgba(29,45,79,.3);transition:.2s;
+}
+.btn:active{transform:scale(.97)}
+.btn.gold{background:linear-gradient(120deg,#d4a72e,#b8860b)}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy);box-shadow:none;font-weight:600}
+/* 黄历 */
+.lish-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lish-item{background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.lish-item .k{font-size:12px;color:#a5851f;font-weight:600}
+.lish-item .v{font-size:15px;font-weight:700;margin-top:2px}
+.lish-item.good{background:#eaf5ee}.lish-item.good .k{color:var(--green)}
+.lish-item.bad{background:#fbecea}.lish-item.bad .k{color:var(--red)}
+.yi-item{display:inline-block;background:#eaf5ee;color:var(--green);padding:3px 8px;border-radius:6px;font-size:12px;margin:2px;font-weight:600}
+.ji-item{display:inline-block;background:#fbecea;color:var(--red);padding:3px 8px;border-radius:6px;font-size:12px;margin:2px;font-weight:600}
+/* 五行穿衣 */
+.clothes-hero{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.cycle{width:86px;height:86px;flex-shrink:0;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
+  background:conic-gradient(#c0392b 0 20%,#e67e22 20% 40%,#f1c40f 40% 60%,#27ae60 60% 80%,#2980b9 80% 100%);box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.cycle-in{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cycle-in b{font-size:24px;line-height:1}
+.cycle-in span{font-size:11px;color:var(--muted)}
+.outfit-level{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.outfit-level:last-child{border-bottom:none}
+.outfit-level .rank{width:54px;text-align:center;flex-shrink:0}
+.outfit-level .rank .tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;color:#fff}
+.rank5 .tag{background:linear-gradient(180deg,#2980b9,#1f3a5f)}
+.rank1 .tag{background:linear-gradient(180deg,#e74c3c,#c0392b)}
+.rank2 .tag{background:linear-gradient(180deg,#27ae60,#1e8449)}
+.rank3 .tag{background:linear-gradient(180deg,#8b93a7,#5f677a)}
+.rank4 .tag{background:linear-gradient(180deg,#f39c12,#cc8000)}
+.outfit-level .swatches{display:flex;gap:6px}
+.swatch{width:26px;height:26px;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.outfit-level .info{flex:1}
+.outfit-level .cname{font-weight:700;font-size:15px}
+.outfit-level .kwords{font-size:12px;color:var(--muted)}
+.outfit-advice{background:linear-gradient(120deg,#fdf9ef,#f8f0d8);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:13px;color:#7a6420;border:1px solid #efe3bd}
+/* 五行穿衣顶部时间栏 */
+.outfit-time{margin:0 0 12px}
+.outfit-time-inner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:linear-gradient(135deg,#1d2d4f,#2a3e6b);border-radius:12px;padding:10px 14px;color:#fff;box-shadow:var(--shadow)}
+.ot-d{font-weight:700;font-size:14px;color:#cdd6ea}
+.ot-hm{font-size:20px;font-weight:800;color:#f0d989;font-variant-numeric:tabular-nums}
+.ot-lunar{font-size:12px;color:#c9a227;background:rgba(201,162,39,.15);padding:2px 9px;border-radius:999px;font-weight:600}
+.outfit-advice.weather{background:linear-gradient(120deg,#eef6ff,#e3f0ff);border-color:#c9e2ff;color:#24508c}
+.outfit-advice.weather.rain{background:linear-gradient(120deg,#fdeeee,#fbe0e0);border-color:#f3c1c1;color:#b04a3a}
+/* 下载提示 */
+.dl-strip{display:flex;gap:10px;margin-top:14px}
+.dl-strip .btn{flex:1;margin:0;padding:12px;font-size:14px}
+/* 梅花易数 */
+.sec-label{font-size:13px;color:var(--muted);font-weight:700;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+.method-chips{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:6px}
+.method-chip{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 2px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:.2s}
+.method-chip.active{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.field{margin-bottom:10px}
+.field label{font-size:13px;color:var(--muted);font-weight:600;display:block;margin-bottom:5px}
+.field input,.field select{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:11px;font-size:15px;background:#fff;outline:none;transition:.2s;color:var(--ink)}
+.field input:focus,.field select:focus{border-color:var(--gold)}
+.question{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:11px;font-size:14px;outline:none;height:64px;resize:none;font-family:inherit}
+.question:focus{border-color:var(--gold)}
+/* 卦象结果 */
+.gua-result{display:none}
+.gua-result.show{display:block}
+.gua-cards{display:flex;gap:10px;margin-bottom:12px}
+.gua-card{flex:1;background:var(--navy);color:#fff;border-radius:14px;padding:12px;text-align:center}
+.gua-card .lb{font-size:11px;color:#b9c6e4;margin-bottom:4px}
+.gua-card .trigram{font-size:34px;line-height:1.2}
+.gua-card .gname{font-size:17px;font-weight:700;margin-top:2px}
+.gua-card.change{background:linear-gradient(150deg,#b8860b,#8a6300)}
+.gua-section{font-size:14px;margin-bottom:12px}
+.gua-section .h{font-weight:700;color:var(--gold);font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.gua-text{background:var(--gold-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.gua-relation{background:#eaf5ee;border-radius:10px;padding:10px 12px;font-size:13px;color:#1e6b43;margin-bottom:8px}
+.note{font-size:12px;color:var(--muted);text-align:center;padding:6px;margin-top:8px}
+.play-warn{font-size:11px;color:#a97f1f;background:var(--gold-soft);border-radius:8px;padding:6px 10px;margin-top:8px}
+/* 新闻 */
+.news-channel{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.news-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.news-tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:.2s}
+.news-tab.active{border-color:var(--gold);color:#fff;background:linear-gradient(135deg,#a96a1f,#b8860b)}
+.ch-tag{font-size:11px;background:var(--navy);color:#fff;padding:3px 9px;border-radius:20px}
+.news-item{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);border-left:4px solid var(--gold)}
+.news-item .nt{font-weight:700;font-size:15px;line-height:1.4}
+  .news-item .ncat{display:inline-block;background:rgba(184,134,11,.15);color:#8a6d1f;font-size:11px;font-weight:600;border-radius:999px;padding:1px 8px;margin-right:8px;vertical-align:1px}
+.news-item .nsrc{font-size:11px;color:var(--muted);margin:4px 0 8px;display:flex;gap:8px;align-items:center}
+.news-item .nsum{font-size:13px;color:#4a5568;margin-bottom:8px}
+.news-item .nim{background:#f0f4ff;border-radius:10px;padding:10px 12px;font-size:13px;border:1px solid #dde5f5}
+.news-item .nim .h{color:var(--navy);font-weight:700;margin-bottom:3px;font-size:13px}
+.news-item .ntli{background:#f2f6ff;border-radius:12px;padding:12px 14px 12px 8px;margin-top:10px;border-left:4px solid #4a6fa5}
+.news-item .ntli-h{font-weight:700;color:#2c4a7c;font-size:13px;margin:0 0 6px 8px}
+.news-item .ntli ul{margin:0;padding-left:22px;list-style:disc}
+.news-item .ntli li{font-size:13px;color:#33405e;line-height:1.65;margin-bottom:3px}
+.news-item .nlink{display:inline-block;margin-top:10px;color:var(--gold);font-weight:700;font-size:13px}
+.ch-live{background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff}
+.ch-refresh{background:linear-gradient(135deg,#a96a1f,#b8860b);color:#fff;border:none;padding:4px 10px;border-radius:999px;cursor:pointer;font-weight:700}
+.news-item .nlink{font-size:12px;color:var(--gold);text-decoration:none;font-weight:600}
+.loader{text-align:center;padding:30px;color:var(--muted)}
+.spinner{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;margin:0 auto 10px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ===== 新闻速览 · 解读与影响（新版设计） ===== */
+.news-hero{
+  background:linear-gradient(135deg,#4a90d9,#6ba3e0);color:#fff;border-radius:16px;
+  padding:16px 18px;margin-bottom:12px;box-shadow:0 6px 20px rgba(74,144,217,.35);position:relative;overflow:hidden;
+}
+.news-hero::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12)}
+.news-hero .nh-title{font-size:18px;font-weight:800;letter-spacing:.5px;position:relative;z-index:1}
+.news-hero .nh-meta{font-size:12px;color:#e3eefb;margin-top:5px;opacity:.95;position:relative;z-index:1}
+/* 今日重点关注 */
+.focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.focus-item{border-radius:12px;padding:12px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.focus-item:active{transform:scale(.97)}
+.focus-item .fi-tag{font-size:10px;font-weight:700;background:rgba(255,255,255,.25);align-self:flex-start;padding:2px 8px;border-radius:999px;letter-spacing:.5px}
+.focus-item .fi-title{font-size:13px;font-weight:700;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.focus-item .fi-src{font-size:10px;opacity:.85}
+/* 分类色彩编码 */
+.ncat{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:8px;color:#fff;vertical-align:1px}
+.cat-国内,.cat-综合要闻{background:#e74c3c}
+.cat-国际,.cat-国际新闻{background:#2c4a7c}
+.cat-科技,.cat-科技航天{background:#8e44ad}
+.cat-财经,.cat-经济产业{background:#2e8b57}
+.cat-民生,.cat-民生健康{background:#e67e22}
+.cat-青岛,.cat-本地要闻{background:#2980b9}
+.cat-文娱八卦,.cat-文化娱乐{background:#d81b60}
+.cat-热搜榜,.cat-热门搜索,.cat-热门视频{background:#7d3ff2}
+.cat-政策法规{background:#c0392b}
+.cat-国际外交{background:#1f4e79}
+.cat-文旅消费{background:#e67e22}
+.cat-安全法治{background:#6c3483}
+/* 热搜热度徽标 */
+.nheat{background:linear-gradient(135deg,#ff6b35,#ff3d5a);color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px}
+/* 序号 */
+.nnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#4a90d9,#2c4a7c);color:#fff;font-size:12px;font-weight:800;margin-right:8px;vertical-align:2px;flex-shrink:0}
+/* 新闻卡片新版 */
+.news-item{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);border-left:4px solid #4a90d9}
+.news-item .nt{font-weight:700;font-size:15px;line-height:1.5;display:flex;align-items:flex-start}
+.news-item .nt .nt-title{flex:1}
+.news-item .nsrc{font-size:11px;color:var(--muted);margin:6px 0 8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.news-item .nsum{font-size:13px;color:#4a5568;margin-bottom:8px;line-height:1.6}
+.news-item .nim{background:#f6f8fd;border-radius:10px;padding:10px 12px;font-size:13px;border:1px solid #e6ecf7;border-left:4px solid #4a90d9}
+.news-item .nim .h{color:#2c4a7c;font-weight:700;margin-bottom:3px;font-size:13px}
+.news-item .ntli{background:#f2f6ff;border-radius:12px;padding:12px 14px 12px 8px;margin-top:10px;border-left:4px solid #4a6fa5}
+.news-item .ntli-h{font-weight:700;color:#2c4a7c;font-size:13px;margin:0 0 6px 8px}
+.news-item .ntli ul{margin:0;padding-left:22px;list-style:disc}
+.news-item .ntli li{font-size:13px;color:#33405e;line-height:1.65;margin-bottom:3px}
+/* 关联话题标签 */
+.ntags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ntag{font-size:11px;color:#4a90d9;background:#eef4fc;border:1px solid #d6e6f7;border-radius:999px;padding:2px 10px;font-weight:600}
+.news-item .nlink{display:inline-block;margin-top:10px;color:#4a90d9;font-weight:700;font-size:13px;text-decoration:none}
+/* 新闻联播分组标题（早/午/晚） */
+.lb-group{margin-bottom:16px}
+.lb-group-head{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;margin-bottom:10px;
+  background:linear-gradient(120deg,#1d2d4f,#2a3e6b);color:#fff;box-shadow:0 4px 12px rgba(29,45,79,.25);
+}
+.lb-group-head .lb-ic{font-size:18px}
+.lb-group-head .lb-name{font-weight:800;font-size:15px;letter-spacing:.5px}
+.lb-group-head .lb-sub{font-size:11px;color:#cdd6ea;flex:1}
+.lb-group-head .lb-count{font-size:11px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:999px;font-weight:700}
+/* 页脚 */
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:18px 10px 30px}
+.footer .disc{display:inline-block;background:var(--gold-soft);color:#9c7b16;padding:6px 12px;border-radius:20px;font-size:11px}
+/* 日期选择 */
+.date-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.date-nav button{border:none;background:var(--navy);color:#fff;width:34px;height:34px;border-radius:9px;font-size:18px;cursor:pointer;font-weight:700}
+.date-nav .cur{flex:1;text-align:center;font-weight:700;font-size:15px}
+.date-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.day-pill{flex-shrink:0;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;text-align:center;cursor:pointer}
+.day-pill.active{border-color:var(--gold);background:var(--gold-soft)}
+.day-pill .wd{font-size:11px;color:var(--muted);font-weight:600}
+.day-pill .md{font-size:15px;font-weight:700}
+.day-pill.active .md{color:var(--gold)}
+/* canvas 下载容器 */
+.post-container{position:relative;margin-top:14px;display:none}
+.post-canvas{width:100%;border-radius:14px;box-shadow:var(--shadow)}
+/* 养生 */
+.health-hero{display:flex;align-items:center;gap:14px;border-radius:16px;padding:18px;color:#fff;box-shadow:var(--shadow)}
+.health-hero .hh-emoji{font-size:42px}
+.health-hero .hh-title{font-size:22px;font-weight:800}
+.health-hero .hh-sub{font-size:13px;opacity:.9;margin-top:3px}
+.health-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.health-item{background:var(--gold-soft);border-radius:12px;padding:12px 14px}
+.health-item .h{font-weight:700;color:#8a6d1f;font-size:14px;margin-bottom:4px}
+.health-item .v{font-size:13px;color:#5a4a20;line-height:1.6}
+.now-shichen{display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,#fdf9ef,#f8f0d8);border:1px solid #efe3bd;border-radius:14px;padding:16px}
+.now-shichen .ns-emoji{font-size:40px}
+.now-shichen .ns-name{font-size:18px;font-weight:800;color:var(--navy)}
+.now-shichen .ns-z{font-size:12px;color:#a5851f;background:#fff;padding:1px 8px;border-radius:999px;margin-left:6px}
+.now-shichen .ns-hours{font-size:13px;color:#8a6d1f;font-weight:700;margin:3px 0 8px}
+.now-shichen .ns-txt{font-size:13px;color:#5a4a20;line-height:1.65}
+.shichen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shichen-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow);position:relative}
+.shichen-card.now{border-color:var(--gold);background:var(--gold-soft)}
+.shichen-card .sh-head{display:flex;align-items:center;gap:6px}
+.shichen-card .sh-head b{font-size:14px;color:var(--navy)}
+.shichen-card .sh-emoji{font-size:18px}
+.shichen-card .sh-hours{font-size:12px;color:var(--gold);font-weight:700;margin-top:4px}
+.shichen-card .sh-z{font-size:11px;color:var(--muted);margin-top:1px}
+.shichen-card .sh-acts{font-size:12px;color:#4a5568;line-height:1.55;margin-top:6px}
+.shichen-card .sh-now{position:absolute;top:-8px;right:8px;font-size:10px;color:#fff;background:linear-gradient(135deg,#a96a1f,#b8860b);padding:2px 8px;border-radius:999px}
+/* 今日时令饭菜 */
+.dish-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dish-col{background:linear-gradient(160deg,#fdf9ef,#f2e9cf);border:1px solid #e8dcb4;border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.dish-col-head{font-size:15px;font-weight:800;color:#8a6d1f;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #e0d2a2;text-align:center}
+.dish-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px dashed #f0e7cc}
+.dish-row:last-of-type{border-bottom:none}
+.dish-label{flex:0 0 60px;font-size:12px;font-weight:700;color:#a5851f;background:#fff;border-radius:999px;padding:2px 8px;text-align:center;margin-top:1px}
+.dish-val{font-size:13px;color:#5a4a20;line-height:1.5;flex:1}
+/* 薅羊毛 */
+.coupon-refresh{background:linear-gradient(135deg,#e74c3c,#ff6b6b);border:none;color:#fff;font-size:12px;padding:4px 12px;border-radius:999px;margin-left:8px;cursor:pointer;font-weight:700}
+.coupon-hero{background:linear-gradient(135deg,#e74c3c,#ff6b6b);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.coupon-hero .ch1{font-size:12px;opacity:.9}
+.coupon-hero .ch2{font-size:17px;font-weight:800;margin:3px 0}
+.coupon-hero .ch3{font-size:12px;opacity:.9}
+.coupon-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.coupon-card .cc-t{font-weight:800;color:#c0392b;font-size:15px;margin-bottom:4px}
+.coupon-card .cc-d{font-size:13px;color:#4a5568;line-height:1.6}
+.coupon-card .cc-how{font-size:12px;color:#8d6e1a;background:var(--gold-soft);border-radius:8px;padding:6px 10px;margin-top:8px}
+/* 薅羊毛·实时特价 */
+.coupon-live-head{font-size:14px;font-weight:800;color:#c0392b;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.coupon-live-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid #e74c3c}
+.coupon-live-card .cl-t{font-weight:700;color:#26324b;font-size:14px;line-height:1.5}
+.coupon-live-card .cl-d{font-size:13px;color:#4a5568;line-height:1.65;margin-top:6px;border-left:3px solid #ffd6cc;padding-left:8px}
+.coupon-live-card .cl-how{font-size:12px;color:#8d6e1a;background:var(--gold-soft);border-radius:8px;padding:6px 10px;margin-top:8px}
+.coupon-live-card .cl-meta{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.coupon-live-card .cl-live{color:#fff;background:linear-gradient(135deg,#27ae60,#2ecc71);padding:1px 8px;border-radius:999px;font-weight:700}
+.coupon-live-card .cl-link{display:inline-block;margin-top:8px;color:#c0392b;font-weight:700;font-size:13px;text-decoration:none}
+.coupon-live-empty{background:#fbecea;border:1px dashed #e0b4a8;border-radius:10px;padding:10px 12px;font-size:12px;color:#a0503a}
+/* 周边游：景点标签 + 行程步骤 */
+.cc-tag{display:inline-block;font-size:11px;color:#8d6e1a;background:var(--gold-soft);border-radius:999px;padding:2px 9px;margin-left:6px;font-weight:700;vertical-align:2px}
+.cc-steps{background:#f6f8fd;border:1px solid #e6ecf7;border-radius:10px;padding:10px 12px;margin-top:8px}
+.cc-steps .step{font-size:13px;color:#3d4a63;line-height:1.7;padding-left:4px}
+.cc-steps .step + .step{border-top:1px dashed #e2e8f4;margin-top:6px;padding-top:6px}
+.cl-how{margin-top:8px}
+@media(min-width:560px){#app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="app-header">
+    <div class="header-title"><span class="dot"></span>✨ 小仙女专用</div>
+    <div class="header-date" id="headerDate">—</div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-tab="lunar"><span class="ic">🀄</span>黄历穿衣</button>
+    <button class="tab-btn" data-tab="meihua"><span class="ic">☯</span>梅花易数</button>
+    <button class="tab-btn" data-tab="news"><span class="ic">📰</span>新闻影响</button>
+    <button class="tab-btn" data-tab="health"><span class="ic">🍵</span>养生</button>
+    <button class="tab-btn" data-tab="coupon"><span class="ic">🏖</span>周边游</button>
+    <button class="tab-btn" data-tab="fashion"><span class="ic">👗</span>时尚穿搭</button>
+  </nav>
+
+  <!-- 功能一：黄历 + 五行穿衣 -->
+  <main class="panel active" id="panel-lunar">
+    <div id="outfitCard"></div>
+    <div class="date-scroll" id="dateScroll"></div>
+    <div id="lunarCard"></div>
+    <p class="footer"><span class="disc">五行穿衣依据传统方位与四季推理，仅供参考，请结合天气与个人体感</span></p>
+  </main>
+
+  <!-- 功能二：梅花易数 -->
+  <main class="panel" id="panel-meihua">
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>梅花易数 · 起卦测算</div>
+      <div class="sec-label">选择起卦方法</div>
+      <div class="method-chips" id="methodChips">
+        <button class="method-chip active" data-method="time">年月日时</button>
+        <button class="method-chip" data-method="number">报数</button>
+        <button class="method-chip" data-method="phone">手机尾号</button>
+        <button class="method-chip" data-method="dir">方位</button>
+        <button class="method-chip" data-method="word">文字</button>
+      </div>
+      <div id="methodForm"></div>
+      <div class="field">
+        <label>所占之事（越具体越清晰）</label>
+        <textarea class="question" id="huati" placeholder="例：我今天适不适合签约合作？"></textarea>
+      </div>
+      <button class="btn" id="qiGuaBtn">☯ 起卦测算</button>
+      <p class="note">一事一卦 · 心诚则灵 · 结果仅供娱乐参考</p>
+    </div>
+    <div class="card gua-result" id="guaResult"></div>
+  </main>
+
+  <!-- 功能三：新闻 -->
+  <main class="panel" id="panel-news">
+    <div class="news-hero">
+      <div class="nh-title">📰 每日新闻速览 · 解读与影响</div>
+      <div class="nh-meta"><span id="newsDate">—</span> · <span id="newsIssue">第—期</span></div>
+    </div>
+    <div class="card" id="newsFocusCard" style="display:none">
+      <div class="card-title"><span class="bar"></span>今日重点关注 <span class="section-tag" id="newsFocusTag"></span></div>
+      <div id="newsFocus"></div>
+    </div>
+    <div class="news-tabs" id="newsTabs"></div>
+    <div id="newsChannel"></div>
+    <div id="newsList"><div class="loader"><div class="spinner"></div>正在加载今日热点…</div></div>
+    <p class="note">新闻来源为公开网络信息 · 解读与影响仅供参考 · 请以官方发布为准</p>
+  </main>
+
+  <!-- 功能四：养生 -->
+  <main class="panel" id="panel-health">
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>季节养生 <span class="section-tag" id="healthSeasonTag"></span></div>
+      <div id="healthSeason"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>今日时令饭菜 · 应季食谱 <span class="section-tag" id="healthDishTag"></span></div>
+      <div id="healthDish"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>时辰养生 · 现在 <span class="section-tag" id="healthNowTag"></span></div>
+      <div id="healthNow"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>十二时辰养生表</div>
+      <div class="note" style="margin:0 0 10px">中医把一天分为十二时辰，各时辰依经络气血运行，顺时而养事半功倍。</div>
+      <div class="shichen-grid" id="healthShichen"></div>
+    </div>
+    <p class="note">养生建议依据传统四季养生与十二时辰理念整理 · 仅供参考 · 身体不适请及时就医</p>
+  </main>
+
+  <!-- 功能五：青岛 & 周边游 -->
+  <main class="panel" id="panel-coupon">
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>当季 · 青岛人出行好去处</div>
+      <div id="couponLive"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>青岛本地 · 盛夏玩水避暑</div>
+      <div id="couponToday"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>山东省内 · 周末说走就走</div>
+      <div id="couponBank"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>省外 · 暑期去趟远方</div>
+      <div id="couponOut"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>当季行程参考</div>
+      <div id="couponShop"></div>
+    </div>
+    <p class="note">景点开放时间、票价、预约及游玩安全以各官方实时公告为准 · 暑期出行请提前核对天气、客流与交通</p>
+  </main>
+
+  <!-- 功能六：时尚穿搭 -->
+  <main class="panel" id="panel-fashion">
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>当季穿搭推荐 <span class="section-tag" id="fashionSeasonTag"></span></div>
+      <div id="fashionSeason"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>五行幸运色搭配 <span class="section-tag" id="fashionColorTag"></span></div>
+      <div id="fashionColors"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="bar"></span>场合穿搭指南</div>
+      <div id="fashionOccasions"></div>
+    </div>
+    <p class="note">穿搭建议依据传统五行色彩与季节理念整理 · 仅供参考 · 请结合个人风格与天气实际穿着</p>
+  </main>
+</div>
+
+<script src="./vendor/lunar.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/hex-data.js"></script>
+<script src="./js/wuxing-lunar.js"></script>
+<script src="./js/meihua.js"></script>
+<script src="./js/news-data.js"></script>
+<script src="./js/news-live.js"></script>
+<script src="./js/news.js"></script>
+<script src="./js/health.js"></script>
+<script src="./js/coupon.js"></script>
+<script src="./js/fashion.js"></script>
+<script src="./js/app.js"></script>
+</body>
+</html>

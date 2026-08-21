@@ -1,0 +1,13 @@
+node_modules/
+apk/
+android/.gradle/
+android/build/
+android/app/build/
+android/gradle/
+android/gradle.zip
+android/local.properties
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.iml
