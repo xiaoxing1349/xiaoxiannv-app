@@ -2,13 +2,16 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "directories": {
     "doc": "docs",
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "verify:handlers": "node -e \"const w=require('./lib/webapi');Promise.all([w.weatherHandler(),w.couponsHandler()]).then(r=>{console.log('weather ok',r[0].ok,!!r[0].data,'coupons ok',r[1].ok,r[1].items.length);}).catch(e=>{console.error(e);process.exit(1);})\""
   },
   "keywords": [],
   "author": "",
