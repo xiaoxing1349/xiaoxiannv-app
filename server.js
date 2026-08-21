@@ -1206,11 +1206,6 @@ app.get('/api/coupons', async (req, res) => {
   }
   res.json({ ok: true, items: couponCache.items, updatedAt: couponCache.updatedAt, crawled: couponCache.crawled });
 });
-// 启动时先刷新一次
-refreshCoupons().catch(() => {});
-// 每 30 分钟后台刷新一次（实时更新）
-setInterval(() => { refreshCoupons().catch(() => {}); }, 30 * 60 * 1000);
-
 // PWA 相关
 app.get('/sw.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'sw.js'));
@@ -1224,6 +1219,14 @@ app.get('/_apk/WuXingLife.apk', (req, res) => {
   res.download(path.join(__dirname, 'apk', 'WuXingLife.apk'), '五行生活指南-v1.0.0.apk');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[YiLiApp] 服务已启动: http://0.0.0.0:${PORT}`);
-});
+// 兼容 Vercel 无服务器环境：仅直接运行时才启动监听
+module.exports = app;
+if (require.main === module) {
+  // 启动时先刷新一次
+  refreshCoupons().catch(() => {});
+  const loop = setInterval(() => { refreshCoupons().catch(() => {}); }, 30 * 60 * 1000);
+  loop.unref();
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[YiLiApp] 服务已启动: http://0.0.0.0:${PORT}`);
+  });
+}
